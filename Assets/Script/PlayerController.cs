@@ -1,31 +1,77 @@
+using System.Collections.Generic;
 using UnityEngine;
 
-public class TestPlayerController : MonoBehaviour
+public class PlayerController : CreateEntity
 {
-    public float moveSpeed = 2f;   // vitesse horizontale
-    public float jumpSpeed = 7f;   // vitesse verticale quand on saute
+    public float jumpForce = 400;
+    public float horizontalMove;
+    public bool jump = false;
+    Rigidbody2D rigidBody;
 
-    private Rigidbody2D rb;
+    //add sword
+    public GameObject WarriorSword;
+    public GameObject RougeSword;
 
-    void Awake()
+    private void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
+        rigidBody = GetComponent<Rigidbody2D>();
+        WarriorClass();
+        //RougeClass();
     }
 
-    void Update()
+    void WarriorClass()
     {
-        float horizontal = Input.GetAxisRaw("Horizontal");
+        ClassName = "Warrior";
+        Health = 5;
+        Strength = 4;
+        Intelligence = 2;
+        Agility = 16;
+        Damage = Strength / Intelligence;
+        canShoot = false;
+        var sword = Instantiate(WarriorSword, gameObject.transform);
+        sword.transform.position += new Vector3(0.6f, 0.3f, 0);
+    }
 
-        // Déplacement gauche/droite
-        Vector2 v = rb.velocity;
-        v.x = horizontal * moveSpeed;
+    void RougeClass()
+    {
+        ClassName = "Rouge";
+        Health = 3;
+        Strength = 2;
+        Intelligence = 2;
+        Agility = 20;
+        Damage = Strength / Intelligence;
+        canShoot = false;
 
-        // Saut (pas de check au sol pour le test)
-        if (Input.GetKeyDown(KeyCode.Space))
+        var sword = Instantiate(RougeSword, gameObject.transform);
+        sword.transform.position += new Vector3(0.6f, 0.3f, 0);
+
+    }
+
+    private void Update()
+    {
+        //Moving direction
+        horizontalMove = Input.GetAxis("Horizontal") * Agility;
+
+        //Rotating
+        if (horizontalMove < 0f) transform.localEulerAngles = new Vector3(0, 180, 0);
+        if (horizontalMove > 0f) transform.localEulerAngles = new Vector3(0, 0, 0);
+
+        //Jumping
+        if (Input.GetButtonDown("Jump")) jump = true;
+    }
+    private void FixedUpdate()
+    {
+        //Call moving function
+        Moving(horizontalMove, jump);
+    }
+    void Moving(float movement, bool canjump)
+    {
+        rigidBody.velocity = new Vector2(movement * Agility * Time.fixedDeltaTime, rigidBody.velocity.y);
+
+        if (canjump && GetComponent<CircleCollider2D>().IsTouchingLayers())
         {
-            v.y = jumpSpeed;
+            rigidBody.AddForce(new Vector2(0, jumpForce));
+            jump = !canjump;
         }
-
-        rb.velocity = v;
     }
 }
