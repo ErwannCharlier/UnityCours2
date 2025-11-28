@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: -6390847326529579469}
   - component: {fileID: 543048832686910612}
   - component: {fileID: -5061686403242429288}
+  - component: {fileID: 920321051343143742}
   m_Layer: 0
   m_Name: BigSword
   m_TagString: Untagged
@@ -167,13 +168,27 @@ Animation:
   m_GameObject: {fileID: 177542}
   m_Enabled: 1
   serializedVersion: 4
-  m_Animation: {fileID: 7400000, guid: 59ba9b4deaa174392b3340b31fc8e491, type: 2}
-  m_Animations: []
+  m_Animation: {fileID: 7400000, guid: 6516aac7dc33945d79a8746425394e35, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: 6516aac7dc33945d79a8746425394e35, type: 2}
   m_WrapMode: 0
   m_PlayAutomatically: 1
   m_AnimatePhysics: 0
   m_UpdateMode: 0
   m_CullingType: 0
+--- !u!114 &920321051343143742
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 177542}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: edc2705369635469aa4655053bf682c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Damage: 0
 --- !u!1 &335124612390517944
 GameObject:
   m_ObjectHideFlags: 0
