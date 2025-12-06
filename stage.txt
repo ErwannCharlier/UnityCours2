@@ -22,3 +22,30 @@ stage:
 
     actor Wall:
         costume Wall_Skirting_Horizontal("gallery:Objects/Wall Skirting Horizontal")
+
+        when started:
+            size = 20
+            setPosition(-195, 120)
+            hide()
+            createClone(self)
+            x += 115
+            createClone(self)
+            x += 115
+            createClone(self)
+            x += 110
+            createClone(self)
+            x += 100
+            createClone(self)
+            setPosition(-129, -20)
+            size = 28
+            createClone(self)
+            x += 89
+            createClone(self)
+            x += 175
+            createClone(self)
+            x += 87
+            createClone(self)
+
+        when cloned:
+            show()
+            goToFront()
