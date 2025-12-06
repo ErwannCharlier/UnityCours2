@@ -1,40 +1,12 @@
 stage:
     default backdrop Building("gallery:City/Building")
     backdrop Polka_Dot_Light_Blue("gallery:Games/Polka Dot Light Blue")
+    head = 0
     food = 0
-    headache = 0
     delay = 1
-
-    def sendChoco(cost):
-        Chocolate.setCostume(cost)
-        Chocolate.goTo(Woman)
-        createClone(Chocolate)
-
-    when setup:
-        playerSpeed = 3
-
-    when started:
-        while delay > 0.3: 
-            wait(10)
-            delay -= 0.1
 
     actor Woman:
         costume Old_Lady_White_Idle("gallery:Figures/Old Lady White Idle")
-
-        when started:
-            showVariable(ref food)
-            showVariable(ref headache)
-            while food < 50 and headache < 10: 
-                goTo(Wall.getClone(randrange(1, 10)))
-                if y > 50: 
-                    y += 15
-                    size = 25
-                else: 
-                    y += 20
-                    size = 30
-
-                sendChoco(randrange(1, 6))
-                wait(delay)
 
     actor Man:
         costume Office_Worker_Male_White_Idle_Smile("gallery:Figures/Office Worker Male White Idle Smile")
@@ -42,33 +14,24 @@ stage:
         costume Office_Worker_Male_White_Walk_2("gallery:Figures/Office Worker Male White Walk 2")
         costume Office_Worker_Male_White_Walk_3("gallery:Figures/Office Worker Male White Walk 3")
         costume Office_Worker_Male_White_Walk_4("gallery:Figures/Office Worker Male White Walk 4")
-
+        costume Office_Worker_Male_White_Knocked_Out_2("gallery:Figures/Office Worker Male White Knocked Out 2")
+        
         when started:
             size = 30
-            setCostume(1)
             setPosition(0, -150)
             rotationStyle = "leftRight"
-            while food < 51 and headache < 10: 
-                if isKeyPressed("right arrow") and x < 300: 
+            while head < 10:
+                if isKeyPressed("right arrow"):
                     heading = 90
-                    x += 10
-                    nextCostume()
-                if isKeyPressed("left arrow") and x > -300: 
+                    x +=10
+                    bounceOffEdge()
+                                
+                                
+                if isKeyPressed("left arrow"):
                     heading = -90
-                    x -= 10
-                    nextCostume()
-                if not isKeyPressed("any"): 
-                    setCostume(1)
-
-        when started:
-            wait(1)
-            while not (headache > 9 or food > 50): 
-                pass
-            if headache > 9: 
-                say("That hurt")
-            else: 
-                say("I'm ok now.")
-
+                    x -=10
+                    bounceOffEdge()
+            say("perdu")
 
     actor Chocolate:
         costume Chocolate_Square_Dark("gallery:Objects/Chocolate Square Dark")
@@ -76,36 +39,6 @@ stage:
         costume Tableware_Top_Down_Plate("gallery:Food/Tableware Top Down Plate")
         costume Bucket_Red_Sitting("gallery:Objects/Bucket Red Sitting")
         costume Horeshoe_Magnet_Idle("gallery:Objects/Horeshoe Magnet Idle")
-
-        when started:
-            size = 20
-            hide()
-
-        when cloned:
-            v = 0
-            if costumeId < 3: 
-                size = 20
-            else: 
-                if costumeId < 5: 
-                    size = 15
-                else: 
-                    size = 10
-
-
-            show()
-            while not touching(Edge.bottom): 
-                y -= v
-                turnRight(3)
-                if touching(Man): 
-                    if costumeId < 3: 
-                        food += 1
-                    else: 
-                        headache += 1
-
-                    deleteClone()
-                wait(0.005)
-                v += 0.1
-            deleteClone()
 
     actor Wall:
         costume Wall_Skirting_Horizontal("gallery:Objects/Wall Skirting Horizontal")
