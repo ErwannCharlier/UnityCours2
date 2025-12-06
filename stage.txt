@@ -39,6 +39,28 @@ stage:
         costume Tableware_Top_Down_Plate("gallery:Food/Tableware Top Down Plate")
         costume Bucket_Red_Sitting("gallery:Objects/Bucket Red Sitting")
         costume Horeshoe_Magnet_Idle("gallery:Objects/Horeshoe Magnet Idle")
+        
+        when started:
+            size = 20
+            hide()
+
+        when cloned:
+            v = 0
+
+            if costumeId < 3:
+                size = 20    
+            else:
+                if costumeId < 5:
+                    size = 15
+                else:
+                    size = 10
+
+            show()
+
+            while not touching(Edge.bottom):
+                y -= v
+                turnRight(3)
+                
 
     actor Wall:
         costume Wall_Skirting_Horizontal("gallery:Objects/Wall Skirting Horizontal")
