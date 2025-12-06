@@ -1,0 +1,24 @@
+stage:
+    default backdrop Building("gallery:City/Building")
+    backdrop Polka_Dot_Light_Blue("gallery:Games/Polka Dot Light Blue")
+
+    actor Woman:
+        costume Old_Lady_White_Idle("gallery:Figures/Old Lady White Idle")
+
+    actor Man:
+        costume Office_Worker_Male_White_Idle_Smile("gallery:Figures/Office Worker Male White Idle Smile")
+        costume Office_Worker_Male_White_Walk_1("gallery:Figures/Office Worker Male White Walk 1")
+        costume Office_Worker_Male_White_Walk_2("gallery:Figures/Office Worker Male White Walk 2")
+        costume Office_Worker_Male_White_Walk_3("gallery:Figures/Office Worker Male White Walk 3")
+        costume Office_Worker_Male_White_Walk_4("gallery:Figures/Office Worker Male White Walk 4")
+        costume Office_Worker_Male_White_Knocked_Out_2("gallery:Figures/Office Worker Male White Knocked Out 2")
+
+    actor Chocolate:
+        costume Chocolate_Square_Dark("gallery:Objects/Chocolate Square Dark")
+        costume Chocolate_Square_White("gallery:Objects/Chocolate Square White")
+        costume Tableware_Top_Down_Plate("gallery:Food/Tableware Top Down Plate")
+        costume Bucket_Red_Sitting("gallery:Objects/Bucket Red Sitting")
+        costume Horeshoe_Magnet_Idle("gallery:Objects/Horeshoe Magnet Idle")
+
+    actor Wall:
+        costume Wall_Skirting_Horizontal("gallery:Objects/Wall Skirting Horizontal")
