@@ -1,138 +1,83 @@
 stage:
-    default backdrop Building("gallery:City/Building")
-    backdrop Polka_Dot_Light_Blue("gallery:Games/Polka Dot Light Blue")
-    food = 0
-    headache = 0
-    delay = 1
+    backdrop Planets("gallery:Planets_Universe/Planets")
+    life = 0
+    shooting = False
 
-    def sendChoco(cost):
-        Chocolate.setCostume(cost)
-        Chocolate.goTo(Woman)
-        createClone(Chocolate)
-
-    when setup:
-        playerSpeed = 3
-
-    when started:
-        while delay > 0.3: 
-            wait(10)
-            delay -= 0.1
-
-    actor Woman:
-        costume Old_Lady_White_Idle("gallery:Figures/Old Lady White Idle")
+    actor Spaceman:
+        costume Spaceman_Fly_Shoot_L2("gallery:Aliens_Universe/Spaceman Fly Shoot L2")
+        costume Spaceman_Fly_L2("gallery:Aliens_Universe/Spaceman Fly L2")
 
         when started:
-            showVariable(ref food)
-            showVariable(ref headache)
-            while food < 50 and headache < 10: 
-                goTo(Wall.getClone(randrange(1, 10)))
-                if y > 50: 
-                    y += 15
-                    size = 25
-                else: 
-                    y += 20
-                    size = 30
+            hide()
+            setPosition(-280, -40)
+            size = 25
+            wait(2)
+            show()
 
-                sendChoco(randrange(1, 6))
-                wait(delay)
-
-    actor Man:
-        costume Office_Worker_Male_White_Idle_Smile("gallery:Figures/Office Worker Male White Idle Smile")
-        costume Office_Worker_Male_White_Walk_1("gallery:Figures/Office Worker Male White Walk 1")
-        costume Office_Worker_Male_White_Walk_2("gallery:Figures/Office Worker Male White Walk 2")
-        costume Office_Worker_Male_White_Walk_3("gallery:Figures/Office Worker Male White Walk 3")
-        costume Office_Worker_Male_White_Walk_4("gallery:Figures/Office Worker Male White Walk 4")
+    actor Alien_Princess:
+        costume Alien_Princess_Idle("gallery:Aliens_Universe/Alien Princess Idle")
 
         when started:
-            size = 30
-            setCostume(1)
-            setPosition(0, -150)
+            show()
+            setPosition(0, 100)
+            opacity = 100
             rotationStyle = "leftRight"
-            while food < 51 and headache < 10: 
-                if isKeyPressed("right arrow") and x < 300: 
-                    heading = 90
-                    x += 10
-                    nextCostume()
-                if isKeyPressed("left arrow") and x > -300: 
-                    heading = -90
-                    x -= 10
-                    nextCostume()
-                if not isKeyPressed("any"): 
-                    setCostume(1)
+            heading = -90
+            size = 25
+            say("Help me Spaceman!")
+            for i in range(0, 20): 
+                opacity -= 5
+                wait(0.1)
+            say("")
+            shooting = True
+            broadcast("newLevel")
 
-        when started:
-            wait(1)
-            while not (headache > 9 or food > 50): 
-                pass
-            if headache > 9: 
-                say("That hurt")
-            else: 
-                say("I'm ok now.")
-
-
-    actor Chocolate:
-        costume Chocolate_Square_Dark("gallery:Objects/Chocolate Square Dark")
-        costume Chocolate_Square_White("gallery:Objects/Chocolate Square White")
-        costume Tableware_Top_Down_Plate("gallery:Food/Tableware Top Down Plate")
-        costume Bucket_Red_Sitting("gallery:Objects/Bucket Red Sitting")
-        costume Horeshoe_Magnet_Idle("gallery:Objects/Horeshoe Magnet Idle")
-
-        when started:
-            size = 20
-            hide()
-
-        when cloned:
-            v = 0
-            if costumeId < 3: 
-                size = 20
-            else: 
-                if costumeId < 5: 
-                    size = 15
-                else: 
-                    size = 10
-
-
+    actor Enemy:
+        costume Flying_Sphere_Droid_Activate_1("gallery:Aliens_Universe/Flying Sphere Droid Activate 1")
+        costume Flying_Sphere_Droid_Deactivate_3("gallery:Aliens_Universe/Flying Sphere Droid Deactivate 3")
+        costume Flying_Sphere_Droid_Deactivated_Idle("gallery:Aliens_Universe/Flying Sphere Droid Deactivated Idle")
+        def enemyGo(level):
+            setPosition(320,randrange(-100,101))
+            setCostume(level)
             show()
-            while not touching(Edge.bottom): 
-                y -= v
-                turnRight(3)
-                if touching(Man): 
-                    if costumeId < 3: 
-                        food += 1
-                    else: 
-                        headache += 1
+            life = 5 * level
+            while life > 0 :
+                move(1.3)
+                if(touching(Edge.left)):
+                    hide()
+                bounceOffEdge()
+                wait(0.01)
+            hide()
+        when started:
+            hide()
+            rotationStyle = "leftRight"
+            size = 50
+            heading = -90
+            showVariable(ref life)
+        
+        when signalReceived("newLevel"):
+            enemyGo(1)
+            enemyGo(2)
+            enemyGo(3)
+            
 
-                    deleteClone()
-                wait(0.005)
-                v += 0.1
-            deleteClone()
-
-    actor Wall:
-        costume Wall_Skirting_Horizontal("gallery:Objects/Wall Skirting Horizontal")
+    actor Blue_Projectile:
+        costume Blue_Projectile_3("gallery:Effects_Universe/Blue Projectile 3")
 
         when started:
-            size = 20
-            setPosition(-195, 120)
             hide()
-            createClone(self)
-            x += 115
-            createClone(self)
-            x += 115
-            createClone(self)
-            x += 110
-            createClone(self)
-            x += 100
-            createClone(self)
-            setPosition(-129, -20)
-            size = 28
-            createClone(self)
-            x += 89
-            createClone(self)
-            x += 175
-            createClone(self)
-            x += 87
-            createClone(self)
-
-        when cloned:
-            show()
-            goToFront()
+            size = 65
+        
+        when keyPressed("space"):
+            if shooting:
+                goTo(Spaceman)
+                pointTowards(Pointer.position)
+                show()
+                while not touching(Edge.any) and not touching(Enemy):
+                    move(15)
+                    wait(0.01)
+                if(touching(Enemy)):
+                    hide()
+                    life -= 1
+                wait(0.01)
+                hide()
